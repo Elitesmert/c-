@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DBTeknikServisModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TBLAdmin">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KULLANICIAD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SIFRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="TBLArızaDetay">
+    <Key>
+      <PropertyRef Name="ARIZAID" />
+    </Key>
+    <Property Name="ARIZAID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ISLEM" Type="Int32" />
+    <Property Name="SORUN" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="ACIKLAMA" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="ONFIYAT" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="NETFIYAT" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ISLEMLER" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TBLUrunKabul" Relationship="Self.FK_TBLArızaDetay_TBLUrunKabul" FromRole="TBLArızaDetay" ToRole="TBLUrunKabul" />
+  </EntityType>
+  <EntityType Name="TBLDepartman">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ACIKLAMA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TBLPersonel" Relationship="Self.FK_TBLPersonel_TBLDepartman" FromRole="TBLDepartman" ToRole="TBLPersonel" />
+  </EntityType>
+  <EntityType Name="TBLFaturaBilgi">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SERI" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="SIRANO" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+    <Property Name="TARIH" Type="DateTime" Precision="3" />
+    <Property Name="SAAT" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+    <Property Name="VERGI" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MUSTERI" Type="Int32" />
+    <Property Name="PERSONEL" Type="Int32" />
+    <NavigationProperty Name="TBLMusteri" Relationship="Self.FK_TBLFaturaBilgi_TBLMusteri" FromRole="TBLFaturaBilgi" ToRole="TBLMusteri" />
+    <NavigationProperty Name="TBLPersonel" Relationship="Self.FK_TBLFaturaBilgi_TBLPersonel" FromRole="TBLFaturaBilgi" ToRole="TBLPersonel" />
+    <NavigationProperty Name="TBLFaturaDetay" Relationship="Self.FK_TBLFaturaDetay_TBLFaturaBilgi" FromRole="TBLFaturaBilgi" ToRole="TBLFaturaDetay" />
+  </EntityType>
+  <EntityType Name="TBLFaturaDetay">
+    <Key>
+      <PropertyRef Name="FATURADETAYID" />
+    </Key>
+    <Property Name="FATURADETAYID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="URUN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ADET" Type="Int32" />
+    <Property Name="FIYAT" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="TUTAR" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="FATURAID" Type="Int32" />
+    <NavigationProperty Name="TBLFaturaBilgi" Relationship="Self.FK_TBLFaturaDetay_TBLFaturaBilgi" FromRole="TBLFaturaDetay" ToRole="TBLFaturaBilgi" />
+  </EntityType>
+  <EntityType Name="TBLGider">
+    <Key>
+      <PropertyRef Name="GIDERID" />
+    </Key>
+    <Property Name="GIDERID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GIDERACIKLAMA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TARIH" Type="DateTime" Precision="3" />
+    <Property Name="TUTAR" Type="Decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="TBLKategori">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TBLUrun" Relationship="Self.FK_TBLUrun_TBLKategori" FromRole="TBLKategori" ToRole="TBLUrun" />
+  </EntityType>
+  <EntityType Name="TBLMusteri">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SOYAD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TELEFON" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="STATU" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="BANKA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ADRES" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TBLFaturaBilgi" Relationship="Self.FK_TBLFaturaBilgi_TBLMusteri" FromRole="TBLMusteri" ToRole="TBLFaturaBilgi" />
+    <NavigationProperty Name="TBLSatıs" Relationship="Self.FK_TBLSatıs_TBLMusteri" FromRole="TBLMusteri" ToRole="TBLSatıs" />
+    <NavigationProperty Name="TBLUrunKabul" Relationship="Self.FK_TBLUrunKabul_TBLMusteri" FromRole="TBLMusteri" ToRole="TBLUrunKabul" />
+  </EntityType>
+  <EntityType Name="TBLNotlar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BASLIK" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ICERİK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="DURUM" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="TBLPersonel">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SOYAD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DEPARTMAN" Type="Int32" />
+    <Property Name="MAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TBLDepartman" Relationship="Self.FK_TBLPersonel_TBLDepartman" FromRole="TBLPersonel" ToRole="TBLDepartman" />
+    <NavigationProperty Name="TBLFaturaBilgi" Relationship="Self.FK_TBLFaturaBilgi_TBLPersonel" FromRole="TBLPersonel" ToRole="TBLFaturaBilgi" />
+    <NavigationProperty Name="TBLSatıs" Relationship="Self.FK_TBLSatıs_TBLPersonel" FromRole="TBLPersonel" ToRole="TBLSatıs" />
+    <NavigationProperty Name="TBLUrunKabul" Relationship="Self.FK_TBLUrunKabul_TBLPersonel" FromRole="TBLPersonel" ToRole="TBLUrunKabul" />
+  </EntityType>
+  <EntityType Name="TBLSatıs">
+    <Key>
+      <PropertyRef Name="SATISID" />
+    </Key>
+    <Property Name="SATISID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="URUN" Type="Int32" />
+    <Property Name="MUSTERI" Type="Int32" />
+    <Property Name="PERSONEL" Type="Int32" />
+    <Property Name="TARIH" Type="DateTime" Precision="3" />
+    <Property Name="ADET" Type="Int16" />
+    <Property Name="FIYAT" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="TBLMusteri" Relationship="Self.FK_TBLSatıs_TBLMusteri" FromRole="TBLSatıs" ToRole="TBLMusteri" />
+    <NavigationProperty Name="TBLPersonel" Relationship="Self.FK_TBLSatıs_TBLPersonel" FromRole="TBLSatıs" ToRole="TBLPersonel" />
+    <NavigationProperty Name="TBLUrun" Relationship="Self.FK_TBLSatıs_TBLUrun" FromRole="TBLSatıs" ToRole="TBLUrun" />
+  </EntityType>
+  <EntityType Name="TBLUrun">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MARKA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ALISFIYAT" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="SATISFİYAT" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="STOK" Type="Int16" />
+    <Property Name="KATEGORI" Type="Int32" />
+    <Property Name="DURUM" Type="Boolean" />
+    <NavigationProperty Name="TBLKategori" Relationship="Self.FK_TBLUrun_TBLKategori" FromRole="TBLUrun" ToRole="TBLKategori" />
+    <NavigationProperty Name="TBLSatıs" Relationship="Self.FK_TBLSatıs_TBLUrun" FromRole="TBLUrun" ToRole="TBLSatıs" />
+    <NavigationProperty Name="TBLUrunKabul" Relationship="Self.FK_TBLUrunKabul_TBLUrun" FromRole="TBLUrun" ToRole="TBLUrunKabul" />
+    <NavigationProperty Name="TBLUrunTakip" Relationship="Self.FK_TBLUrunTakip_TBLUrun" FromRole="TBLUrun" ToRole="TBLUrunTakip" />
+  </EntityType>
+  <EntityType Name="TBLUrunKabul">
+    <Key>
+      <PropertyRef Name="ISLEMID" />
+    </Key>
+    <Property Name="ISLEMID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="URUN" Type="Int32" />
+    <Property Name="MUSTERI" Type="Int32" />
+    <Property Name="PERSONEL" Type="Int32" />
+    <Property Name="GELISTARIHI" Type="DateTime" Precision="3" />
+    <Property Name="CIKISTARIHI" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="TBLArızaDetay" Relationship="Self.FK_TBLArızaDetay_TBLUrunKabul" FromRole="TBLUrunKabul" ToRole="TBLArızaDetay" />
+    <NavigationProperty Name="TBLMusteri" Relationship="Self.FK_TBLUrunKabul_TBLMusteri" FromRole="TBLUrunKabul" ToRole="TBLMusteri" />
+    <NavigationProperty Name="TBLPersonel" Relationship="Self.FK_TBLUrunKabul_TBLPersonel" FromRole="TBLUrunKabul" ToRole="TBLPersonel" />
+    <NavigationProperty Name="TBLUrun" Relationship="Self.FK_TBLUrunKabul_TBLUrun" FromRole="TBLUrunKabul" ToRole="TBLUrun" />
+  </EntityType>
+  <EntityType Name="TBLUrunTakip">
+    <Key>
+      <PropertyRef Name="TAKIPID" />
+    </Key>
+    <Property Name="TAKIPID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="URUN" Type="Int32" />
+    <Property Name="DURUM" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="TARIH" Type="Int32" />
+    <Property Name="TAKIPKOD" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="TBLUrun" Relationship="Self.FK_TBLUrunTakip_TBLUrun" FromRole="TBLUrunTakip" ToRole="TBLUrun" />
+  </EntityType>
+  <Association Name="FK_TBLArızaDetay_TBLUrunKabul">
+    <End Role="TBLUrunKabul" Type="Self.TBLUrunKabul" Multiplicity="0..1" />
+    <End Role="TBLArızaDetay" Type="Self.TBLArızaDetay" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLUrunKabul">
+        <PropertyRef Name="ISLEMID" />
+      </Principal>
+      <Dependent Role="TBLArızaDetay">
+        <PropertyRef Name="ISLEM" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLPersonel_TBLDepartman">
+    <End Role="TBLDepartman" Type="Self.TBLDepartman" Multiplicity="0..1" />
+    <End Role="TBLPersonel" Type="Self.TBLPersonel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLDepartman">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLPersonel">
+        <PropertyRef Name="DEPARTMAN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLFaturaBilgi_TBLMusteri">
+    <End Role="TBLMusteri" Type="Self.TBLMusteri" Multiplicity="0..1" />
+    <End Role="TBLFaturaBilgi" Type="Self.TBLFaturaBilgi" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLMusteri">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLFaturaBilgi">
+        <PropertyRef Name="MUSTERI" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLFaturaBilgi_TBLPersonel">
+    <End Role="TBLPersonel" Type="Self.TBLPersonel" Multiplicity="0..1" />
+    <End Role="TBLFaturaBilgi" Type="Self.TBLFaturaBilgi" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLPersonel">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLFaturaBilgi">
+        <PropertyRef Name="PERSONEL" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLFaturaDetay_TBLFaturaBilgi">
+    <End Role="TBLFaturaBilgi" Type="Self.TBLFaturaBilgi" Multiplicity="0..1" />
+    <End Role="TBLFaturaDetay" Type="Self.TBLFaturaDetay" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLFaturaBilgi">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLFaturaDetay">
+        <PropertyRef Name="FATURAID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLUrun_TBLKategori">
+    <End Role="TBLKategori" Type="Self.TBLKategori" Multiplicity="0..1" />
+    <End Role="TBLUrun" Type="Self.TBLUrun" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLKategori">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLUrun">
+        <PropertyRef Name="KATEGORI" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLSatıs_TBLMusteri">
+    <End Role="TBLMusteri" Type="Self.TBLMusteri" Multiplicity="0..1" />
+    <End Role="TBLSatıs" Type="Self.TBLSatıs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLMusteri">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLSatıs">
+        <PropertyRef Name="MUSTERI" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLUrunKabul_TBLMusteri">
+    <End Role="TBLMusteri" Type="Self.TBLMusteri" Multiplicity="0..1" />
+    <End Role="TBLUrunKabul" Type="Self.TBLUrunKabul" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLMusteri">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLUrunKabul">
+        <PropertyRef Name="MUSTERI" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLSatıs_TBLPersonel">
+    <End Role="TBLPersonel" Type="Self.TBLPersonel" Multiplicity="0..1" />
+    <End Role="TBLSatıs" Type="Self.TBLSatıs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLPersonel">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLSatıs">
+        <PropertyRef Name="PERSONEL" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLUrunKabul_TBLPersonel">
+    <End Role="TBLPersonel" Type="Self.TBLPersonel" Multiplicity="0..1" />
+    <End Role="TBLUrunKabul" Type="Self.TBLUrunKabul" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLPersonel">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLUrunKabul">
+        <PropertyRef Name="PERSONEL" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLSatıs_TBLUrun">
+    <End Role="TBLUrun" Type="Self.TBLUrun" Multiplicity="0..1" />
+    <End Role="TBLSatıs" Type="Self.TBLSatıs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLUrun">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLSatıs">
+        <PropertyRef Name="URUN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLUrunKabul_TBLUrun">
+    <End Role="TBLUrun" Type="Self.TBLUrun" Multiplicity="0..1" />
+    <End Role="TBLUrunKabul" Type="Self.TBLUrunKabul" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLUrun">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLUrunKabul">
+        <PropertyRef Name="URUN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TBLUrunTakip_TBLUrun">
+    <End Role="TBLUrun" Type="Self.TBLUrun" Multiplicity="0..1" />
+    <End Role="TBLUrunTakip" Type="Self.TBLUrunTakip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TBLUrun">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TBLUrunTakip">
+        <PropertyRef Name="URUN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DBTeknikServisEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="TBLAdmin" EntityType="Self.TBLAdmin" />
+    <EntitySet Name="TBLArızaDetay" EntityType="Self.TBLArızaDetay" />
+    <EntitySet Name="TBLDepartman" EntityType="Self.TBLDepartman" />
+    <EntitySet Name="TBLFaturaBilgi" EntityType="Self.TBLFaturaBilgi" />
+    <EntitySet Name="TBLFaturaDetay" EntityType="Self.TBLFaturaDetay" />
+    <EntitySet Name="TBLGider" EntityType="Self.TBLGider" />
+    <EntitySet Name="TBLKategori" EntityType="Self.TBLKategori" />
+    <EntitySet Name="TBLMusteri" EntityType="Self.TBLMusteri" />
+    <EntitySet Name="TBLNotlar" EntityType="Self.TBLNotlar" />
+    <EntitySet Name="TBLPersonel" EntityType="Self.TBLPersonel" />
+    <EntitySet Name="TBLSatıs" EntityType="Self.TBLSatıs" />
+    <EntitySet Name="TBLUrun" EntityType="Self.TBLUrun" />
+    <EntitySet Name="TBLUrunKabul" EntityType="Self.TBLUrunKabul" />
+    <EntitySet Name="TBLUrunTakip" EntityType="Self.TBLUrunTakip" />
+    <AssociationSet Name="FK_TBLArızaDetay_TBLUrunKabul" Association="Self.FK_TBLArızaDetay_TBLUrunKabul">
+      <End Role="TBLUrunKabul" EntitySet="TBLUrunKabul" />
+      <End Role="TBLArızaDetay" EntitySet="TBLArızaDetay" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLPersonel_TBLDepartman" Association="Self.FK_TBLPersonel_TBLDepartman">
+      <End Role="TBLDepartman" EntitySet="TBLDepartman" />
+      <End Role="TBLPersonel" EntitySet="TBLPersonel" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLFaturaBilgi_TBLMusteri" Association="Self.FK_TBLFaturaBilgi_TBLMusteri">
+      <End Role="TBLMusteri" EntitySet="TBLMusteri" />
+      <End Role="TBLFaturaBilgi" EntitySet="TBLFaturaBilgi" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLFaturaBilgi_TBLPersonel" Association="Self.FK_TBLFaturaBilgi_TBLPersonel">
+      <End Role="TBLPersonel" EntitySet="TBLPersonel" />
+      <End Role="TBLFaturaBilgi" EntitySet="TBLFaturaBilgi" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLFaturaDetay_TBLFaturaBilgi" Association="Self.FK_TBLFaturaDetay_TBLFaturaBilgi">
+      <End Role="TBLFaturaBilgi" EntitySet="TBLFaturaBilgi" />
+      <End Role="TBLFaturaDetay" EntitySet="TBLFaturaDetay" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLUrun_TBLKategori" Association="Self.FK_TBLUrun_TBLKategori">
+      <End Role="TBLKategori" EntitySet="TBLKategori" />
+      <End Role="TBLUrun" EntitySet="TBLUrun" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLSatıs_TBLMusteri" Association="Self.FK_TBLSatıs_TBLMusteri">
+      <End Role="TBLMusteri" EntitySet="TBLMusteri" />
+      <End Role="TBLSatıs" EntitySet="TBLSatıs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLUrunKabul_TBLMusteri" Association="Self.FK_TBLUrunKabul_TBLMusteri">
+      <End Role="TBLMusteri" EntitySet="TBLMusteri" />
+      <End Role="TBLUrunKabul" EntitySet="TBLUrunKabul" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLSatıs_TBLPersonel" Association="Self.FK_TBLSatıs_TBLPersonel">
+      <End Role="TBLPersonel" EntitySet="TBLPersonel" />
+      <End Role="TBLSatıs" EntitySet="TBLSatıs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLUrunKabul_TBLPersonel" Association="Self.FK_TBLUrunKabul_TBLPersonel">
+      <End Role="TBLPersonel" EntitySet="TBLPersonel" />
+      <End Role="TBLUrunKabul" EntitySet="TBLUrunKabul" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLSatıs_TBLUrun" Association="Self.FK_TBLSatıs_TBLUrun">
+      <End Role="TBLUrun" EntitySet="TBLUrun" />
+      <End Role="TBLSatıs" EntitySet="TBLSatıs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLUrunKabul_TBLUrun" Association="Self.FK_TBLUrunKabul_TBLUrun">
+      <End Role="TBLUrun" EntitySet="TBLUrun" />
+      <End Role="TBLUrunKabul" EntitySet="TBLUrunKabul" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TBLUrunTakip_TBLUrun" Association="Self.FK_TBLUrunTakip_TBLUrun">
+      <End Role="TBLUrun" EntitySet="TBLUrun" />
+      <End Role="TBLUrunTakip" EntitySet="TBLUrunTakip" />
+    </AssociationSet>
+    <FunctionImport Name="makskategoriurun" ReturnType="Collection(String)" />
+  </EntityContainer>
+</Schema>
